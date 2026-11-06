@@ -818,7 +818,7 @@ function repairUpd(dt){
     for(var k=0;k<wallV.length;k++){
       var w=wallV[k], m=null;
       for(var j=0;j<valleys.length;j++){ var v=valleys[j]; if(!v.taken&&v.s<=w.e+1&&v.e>=w.s-1){m=v;break;} }
-      if(m){ m.taken=true; w.s=m.s; w.e=m.e; if(m.w>=w.w0+2){ startRepair(m); return; } }
+      if(m){ m.taken=true; w.s=m.s; w.e=m.e; if(m.w<w.w0) w.w0=m.w; if(m.w>=w.w0+2){ startRepair(m); return; } }
     }
     for(var q=0;q<valleys.length;q++) if(!valleys[q].taken) wallV.push({s:valleys[q].s,e:valleys[q].e,w0:valleys[q].w});
   }
@@ -906,7 +906,7 @@ function pickLure(){
       for(i=0;i<valleys.length;i++){ if(!best||valleys[i].w>best.w) best=valleys[i]; }
       if(best){
         var wk=outerPanel(best); if(wk>=0) return ['w'+best.s,wk];
-        return ['w2'+best.s,panelOf(best.s)];
+        for(k=0;k<hills.length;k++){ if(hills[k].e+1===best.s) return ['w2'+best.s,panelOf(Math.max(E0,hills[k].c-3))]; if(hills[k].s-1===best.e) return ['w3'+best.s,panelOf(Math.min(E1,hills[k].c+3))]; }
       }
       for(k=0;k<NP;k++) if(panelMaxH(k)<1.0) return ['wf'+k,k];
       return ['wx',3];
