@@ -724,7 +724,7 @@ function applyHit(e,dt){
     if(q.u>=lo&&q.u<=hi&&q.v>-0.02&&q.v<1.02){
       var F=G.folds[i];S.hit='f'+i;
       if(F.wet<0.05&&!F.contact)F.hitV=v;else F.hitV=lerp(F.hitV,v,Math.min(1,dt*3));
-      F.wet+=3.2*e;F.lastHit=now;
+      F.wet+=3.8*e;F.lastHit=now;
       if(!F.contact&&F.wet>=1){F.contact=true;F.wet=Math.max(F.wet,1);SND.patan();
         var a1=P(FA(i,F.hitV),F.hitV);for(var k=0;k<10;k++)addFx({k:'drop',x:a1[0]+(Math.random()-0.5)*50*K,y:a1[1]+(Math.random()-0.5)*50*K,vx:(Math.random()-0.5)*120,vy:-80-Math.random()*60,t:0,T:0.6,c:COL.ice});}
       if(F.contact){F.growth=Math.min(1,F.growth+0.6*e);if(now-S.lastGr>0.16&&F.growth<1){S.lastGr=now;SND.grow(F.growth);}}
