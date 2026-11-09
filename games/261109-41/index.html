@@ -4257,14 +4257,14 @@ function matRep(base, tex, rx, ry, rough) { var m = M('#ffffff', rough == null ?
   mesh(new T.BoxGeometry(0.1, 0.32, W.zf - W.zb + 0.1), MAT.trim, W.x1 + 0.1, -0.16, (W.zf + W.zb) / 2, house);
   // rugs
   var rugT = ctex(256, 160, function (g2, w, h) {
-    g2.fillStyle = '#f4b9c8'; g2.beginPath(); g2.ellipse(128, 80, 124, 76, 0, 0, TAU); g2.fill();
+    g2.fillStyle = '#efa2b7'; g2.beginPath(); g2.ellipse(128, 80, 124, 76, 0, 0, TAU); g2.fill();
     g2.strokeStyle = '#fff4f6'; g2.lineWidth = 6; g2.beginPath(); g2.ellipse(128, 80, 106, 62, 0, 0, TAU); g2.stroke();
     g2.strokeStyle = 'rgba(255,255,255,.5)'; g2.lineWidth = 2; g2.beginPath(); g2.ellipse(128, 80, 92, 52, 0, 0, TAU); g2.stroke();
     for (var i = 0; i < 1600; i++) { g2.fillStyle = rnd() < 0.5 ? 'rgba(255,255,255,.15)' : 'rgba(180,90,110,.12)'; var a = rnd() * TAU, rr = Math.sqrt(rnd()); g2.fillRect(128 + Math.cos(a) * 120 * rr, 80 + Math.sin(a) * 72 * rr, 2, 2); }
   });
   var rug = decal(rugT, 2.4, 1.5); rug.material = M('#ffffff', 0.95, { map: rugT, transparent: true }); rug.material.depthWrite = false; rug.position.set(5.3, 0.006, -0.1); house.add(rug);
   var rug2T = ctex(256, 180, function (g2, w, h) {
-    g2.fillStyle = '#cfeadf'; g2.fillRect(8, 8, w - 16, h - 16);
+    g2.fillStyle = '#a9dcc8'; g2.fillRect(8, 8, w - 16, h - 16);
     g2.strokeStyle = '#fffaf0'; g2.lineWidth = 5; g2.strokeRect(20, 20, w - 40, h - 40);
     for (var x = 8; x < w - 8; x += 6) { g2.fillStyle = '#fffaf0'; g2.fillRect(x, 0, 2, 8); g2.fillRect(x, h - 8, 2, 8); }
     for (var i = 0; i < 1500; i++) { g2.fillStyle = rnd() < 0.5 ? 'rgba(255,255,255,.15)' : 'rgba(60,120,100,.1)'; g2.fillRect(10 + rnd() * (w - 20), 10 + rnd() * (h - 20), 2, 2); }
@@ -4297,7 +4297,7 @@ function matRep(base, tex, rx, ry, rough) { var m = M('#ffffff', rough == null ?
   // AO strips
   var ao = decal(TEX.aoLine, W.x1 - W.entX1, 0.45, 0.9); ao.rotation.x = -PI / 2; ao.position.set((W.x1 + W.entX1) / 2, 0.003, W.zb + 0.22); ao.rotation.z = PI; house.add(ao);
   var ao2 = decal(TEX.aoLine, W.x1 - W.entX1, 0.5, 0.55); ao2.rotation.set(0, 0, PI); ao2.position.set((W.x1 + W.entX1) / 2, 0.25, W.zb + 0.005); house.add(ao2);
-  var ao3 = decal(TEX.aoLine, 1.75, 0.4, 0.8); ao3.rotation.x = -PI / 2; ao3.rotation.z = -PI / 2; ao3.position.set(W.entX1 + 0.2, 0.003, (W.zb + W.entZ) / 2); house.add(ao3);
+  var ao3 = decal(TEX.aoLine, 1.75, 0.3, 0.35); ao3.rotation.x = -PI / 2; ao3.rotation.z = -PI / 2; ao3.position.set(W.entX1 + 0.2, 0.003, (W.zb + W.entZ) / 2); house.add(ao3);
   // entrance low walls
   var lw = M('#fff1df', 0.6, { map: texRep(TEX.wall, 3, 0.6), env: 0.6 });
   var lowH = 0.55;
@@ -4985,7 +4985,7 @@ function makeBlanket(ci) {
   var folded = mesh(rbox(0.34, 0.07, 0.26, 0.03), bm, 0, 0.035, 0, g);
   var geo = new T.PlaneGeometry(0.78, 0.62, 26, 14); geo.rotateX(-PI / 2);
   var spread = mesh(geo, bm, 0, 0, 0, g); spread.visible = false;
-  var edge = mesh(new T.BoxGeometry(0.06, 0.015, 0.6), M('#ffffff', 0.8), 0.37, 0.0, 0, spread);
+  var edge = mesh(rbox(0.07, 0.03, 0.56, 0.012), M('#ffffff', 0.8, { bump: TEX.weave, bs: 0.3 }), 0.36, 0.0, 0, spread);
   geo.userData.base = Float32Array.from(geo.attributes.position.array);
   return newItem('blanket', g, { r: 0.17, h: 0.07, folded: folded, spread: spread, body: 0, bodyT: 0, cover: false, edge: edge });
 }
@@ -4993,15 +4993,17 @@ function shapeBlanket(it) {
   var geo = it.spread.geometry, p = geo.attributes.position, b = geo.userData.base;
   for (var i = 0; i < p.count; i++) {
     var x = b[i * 3], z = b[i * 3 + 2];
-    var a = x + 0.35; // 0 at feet
-    var bodyH = (0.05 + 0.12 * smooth((a - 0.22) / 0.22)) * Math.exp(-Math.pow(z / 0.15, 2)) * it.body;
-    var base = 0.02 + it.body * 0.03;
-    var droop = -Math.max(0, Math.abs(z) - 0.2) * 0.35;
-    var fold = Math.sin(x * 22 + z * 6) * 0.006;
+    var a = x + 0.37; // 0 at the feet, ~0.7 at the chest
+    var prof = 0.14 + 0.2 * smooth((a - 0.2) / 0.18);
+    prof *= 1 - 0.35 * smooth((a - 0.6) / 0.12);
+    var bodyH = prof * Math.exp(-Math.pow(z / 0.2, 2)) * it.body;
+    var base = 0.025 + it.body * 0.03;
+    var droop = -Math.max(0, Math.abs(z) - 0.22) * 0.4;
+    var fold = Math.sin(x * 22 + z * 6) * 0.006 + Math.sin(z * 30) * 0.004 * it.body;
     p.setY(i, base + bodyH + droop + fold);
   }
   p.needsUpdate = true; geo.computeVertexNormals();
-  it.edge.position.y = 0.02 + 0.17 * it.body * 0.6;
+  it.edge.position.y = 0.03 + 0.26 * it.body;
 }
 var hatTex = ctex(128, 128, function (g, w, h) { g.fillStyle = '#ead29c'; g.fillRect(0, 0, w, h); for (var y = 0; y < h; y += 4) { g.fillStyle = y % 8 ? 'rgba(170,130,60,.35)' : 'rgba(255,245,210,.4)'; g.fillRect(0, y, w, 2); } for (var x = 0; x < w; x += 6) { g.fillStyle = 'rgba(150,110,50,.15)'; g.fillRect(x, 0, 2, h); } });
 function makeHat() {
@@ -5570,7 +5572,7 @@ function updateItem(it, dt, t) {
   if (it.doll && !it.doll.present) vis = false;
   switch (it.state) {
     case 'surf': tgt.copy(it.pos); if (it.deco && it.type !== 'basket') flat = true; break;
-    case 'finger': tgt.copy(it.hover); k = 40; if (it.deco && it.type !== 'basket') { rx = it.onWall ? 0 : -0.6; } break;
+    case 'finger': tgt.copy(it.hover); k = 30; if (it.deco && it.type !== 'basket') { rx = it.onWall ? 0 : -0.6; } break;
     case 'hook': case 'wall': tgt.copy(it.pos); ry = 0; rz = Math.sin(t * 1.3 + it.pos.x) * 0.02; break;
     case 'slot': tgt.copy(it.pos); ry = PI; break;
     case 'plate': if (it.plate) { tgt.copy(it.plate.g.position); tgt.y += 0.011; ry = it.plate.g.rotation.y + 0.4; k = 60; } break;
@@ -5608,7 +5610,7 @@ function updateItem(it, dt, t) {
     case 'cover': {
       var sp = it.spot; if (!sp) break;
       var feet = spotFeet(sp, _t3);
-      tgt.set(feet.x + sp.dx * 0.33, sp.y, feet.z + sp.dz * 0.33);
+      tgt.set(feet.x + sp.dx * 0.31, sp.y, feet.z + sp.dz * 0.31);
       ry = Math.atan2(-sp.dz, sp.dx); k = 18;
       break;
     }
@@ -5620,7 +5622,7 @@ function updateItem(it, dt, t) {
     if (Math.abs(it.body - it.bodyT) > 0.01 || it._shaped == null) { it.body = damp(it.body, it.bodyT, 8, dt); shapeBlanket(it); it._shaped = 1; }
   }
   if (!it.vis) it.vis = tgt.clone();
-  if (it.state === 'finger' || it.state === 'hand' || it.state === 'plate') it.vis.copy(tgt);
+  if (it.state === 'hand' || it.state === 'plate') it.vis.copy(tgt);
   else { it.vis.x = damp(it.vis.x, tgt.x, k, dt); it.vis.y = damp(it.vis.y, tgt.y, k, dt); it.vis.z = damp(it.vis.z, tgt.z, k, dt); }
   // squash spring
   it.sqV += (-it.sq * 220 - it.sqV * 14) * dt; it.sq += it.sqV * dt;
@@ -5913,7 +5915,7 @@ function layout() {
   ov.width = Math.round(VW * Math.min(2, DPR)); ov.height = Math.round(VH * Math.min(2, DPR)); ov.style.width = VW + 'px'; ov.style.height = VH + 'px';
   var a = VW / VH; CAM.aspect = a;
   camera.aspect = a;
-  CAM.w = clamp(3.0 + (a - 0.5) * 4.4, 3.0, 7.4);
+  CAM.w = clamp(3.0 + (a - 0.5) * 4.0, 3.0, 6.3);
   CAM.pitch = lerp(0.52, 0.3, clamp((a - 0.5) / 0.9, 0, 1));
   var half = CAM.w / 2;
   CAM.minX = W.x0 + half - 0.3; CAM.maxX = W.x1 - half + 0.2;
@@ -6171,92 +6173,114 @@ function grabItem(it, spawned) {
   var cur = it.g.position.clone();
   setState(it, 'finger');
   it.hover.copy(cur);
-  var hit = rayY(PTR.x, PTR.y, 0.62, _hp);
-  it.grabOff = hit && !spawned ? new V3(cur.x - hit.x, 0, cur.z - hit.z) : new V3();
-  if (it.grabOff.length() > 0.3) it.grabOff.setLength(0.3);
   it.mouthT = 0; it.pourCup = null;
+  it.vis = cur.clone();
   it.sqV += 3; SND.pickItem(it);
   if (it.type === 'blanket' && it.prev.spot) { it.cover = false; }
 }
-var _ih = new V3();
-function dragItem(it) {
-  var hit = rayY(PTR.x, PTR.y, 0.62, _hp); if (!hit) return;
-  it.grabOff.multiplyScalar(0.9);
-  var p = _ih.set(hit.x + it.grabOff.x, 0.62, hit.z + it.grabOff.z);
-  it.onWall = false;
-  var wallZ = p.x > W.entX1 ? W.zb : (p.z < W.entZ && p.x > W.doorX0 - 0.05 && p.x < W.doorX1 + 0.05) ? null : null;
-  if (p.x > W.entX1 - 0.05 && p.z < W.zb + 0.06) {
-    var wh = rayZ(PTR.x, PTR.y, W.zb + 0.05, _t3);
-    if (wh) { p.set(clamp(wh.x, W.entX1 + 0.1, W.x1 - 0.1), clamp(wh.y, 0.62, 2.3), W.zb + 0.06); it.onWall = true; }
+var _ih = new V3(), _q = new V3(), _sp2 = { x: 0, y: 0, z: 0 };
+function underFinger(sx, sy) {
+  // first surface (or the back wall) under the finger along the view ray
+  setRay(sx, sy);
+  var o = ray.ray.origin, d = ray.ray.direction, best = null, bt = 1e9;
+  for (var i = 0; i < SURF.length; i++) {
+    var s = SURF[i]; if (Math.abs(d.y) < 1e-5) continue;
+    var t = (s.y - o.y) / d.y; if (t <= 0 || t >= bt) continue;
+    var x = o.x + d.x * t, z = o.z + d.z * t;
+    if (x >= s.x0 && x <= s.x1 && z >= s.z0 && z <= s.z1) { bt = t; best = { s: s, x: x, y: s.y, z: z, t: t }; }
   }
-  if (!it.onWall) { p.x = clamp(p.x, W.x0 + 0.08, W.x1 - 0.08); p.z = clamp(p.z, W.zb + 0.06, W.zf - 0.04); }
-  it.hover.copy(p);
-  it.target = itemTarget(it, p);
-  it.preview = it.target && it.target.sx != null ? { x: it.target.sx, y: it.target.sy, z: it.target.sz } : null;
-  showPreview(it.target && it.target.ring ? it.target.ring : null);
-  // live: pouring
+  if (Math.abs(d.z) > 1e-5) {
+    var tw = (W.zb + 0.05 - o.z) / d.z, wx = o.x + d.x * tw, wy = o.y + d.y * tw;
+    if (tw > 0 && tw < bt && wx > W.entX1 && wx < W.x1 && wy > 0.05 && wy < 2.45) return { wall: true, x: wx, y: wy, z: W.zb + 0.05, t: tw };
+  }
+  if (!best) { var t0 = -o.y / d.y; var q = floorClampItem(new V3(o.x + d.x * t0, 0, o.z + d.z * t0)); var s0 = surfaceAt(q.x, q.z) || SURF[SURF.length - 3]; best = { s: s0, x: q.x, y: s0.y, z: q.z }; }
+  return best;
+}
+function pourTarget(u) {
+  var b = null, bs = 1;
+  for (var i = 0; i < ITEMS.length; i++) {
+    var c = ITEMS[i]; if (c.type !== 'cup' || c.state === 'finger' || !c.g.visible) continue;
+    var sc = Math.min(scrDist(_t3.copy(c.g.position).add(new V3(0, 0.12, 0))) / 0.22, d2(u.x, u.z, c.g.position.x, c.g.position.z) / 0.26);
+    if (sc < bs) { bs = sc; b = c; }
+  }
+  return b;
+}
+function scrDist(p) { toScreen(p, _sp2); return Math.hypot(_sp2.x - PTR.x, _sp2.y - PTR.y) / pxPerUnit(p); }
+function dragItem(it) {
+  var u = underFinger(PTR.x, PTR.y);
+  it.onWall = !!u.wall;
+  var lift = 0.1 + Math.min(0.08, it.h * 0.4);
+  if (u.wall) it.hover.set(clamp(u.x, W.entX1 + 0.1, W.x1 - 0.1), clamp(u.y, 0.35, 2.3), W.zb + 0.07);
+  else it.hover.set(u.x, u.y + lift, u.z);
+  it.under = u;
+  it.target = itemTarget(it, u);
+  var tg = it.target;
+  it.preview = tg && tg.sx != null ? { x: tg.sx, y: tg.sy, z: tg.sz } : null;
+  if (tg && tg.snap) it.hover.lerp(tg.snap, 0.75);
+  showPreview(tg && tg.ring ? tg.ring : null);
   if (it.type === 'teapot') {
-    var c = it.onWall ? null : nearestCup(p, 0.3, null);
-    if (c && c.state !== 'finger') { it.pourCup = c; it.hover.set(c.g.position.x - 0.13, c.g.position.y + 0.17, c.g.position.z); it.tiltT = 1; it.streamTo = c; }
+    var c = it.onWall ? null : pourTarget(u);
+    if (c && c.state !== 'finger') { it.pourCup = c; it.hover.set(c.g.position.x - 0.13, c.g.position.y + 0.17, c.g.position.z); it.tiltT = 1; it.streamTo = c; it.preview = null; showPreview(null); }
     else { it.pourCup = null; it.tiltT = 0; it.streamTo = null; }
   }
 }
-function itemTarget(it, p) {
-  var T0 = null;
-  if (it.deco && it.onWall) {
+function itemTarget(it, u) {
+  if (it.deco && u.wall) {
     var bh = null, bd = 0.5;
-    HOOKS.forEach(function (h) { if (h.occ && h.occ !== it) return; if (h.door) return; var dd = Math.hypot(p.x - h.x, p.y - h.y); if (dd < bd) { bd = dd; bh = h; } });
-    if (bh) return { kind: 'hook', hook: bh, ring: { x: bh.x, y: bh.y - 0.12, z: bh.z + 0.02, wall: true } };
-    return { kind: 'wall', x: p.x, y: p.y, z: W.zb + 0.04 };
+    HOOKS.forEach(function (h) { if ((h.occ && h.occ !== it) || h.door) return; var dd = Math.hypot(u.x - h.x, u.y - h.y); if (dd < bd) { bd = dd; bh = h; } });
+    if (bh) return { kind: 'hook', hook: bh, ring: { x: bh.x, y: bh.y - 0.12, z: bh.z + 0.02, wall: true }, snap: new V3(bh.x, bh.y + (it.hangY || 0), bh.z + 0.03) };
+    return { kind: 'wall', x: u.x, y: clamp(u.y, 0.5, 2.3), z: W.zb + 0.04 };
   }
   if (it.deco) {
-    var dh = HOOKS[5]; if (!dh.occ && Math.hypot(p.x - dh.x, p.z - dh.z) < 0.35 && region(p.x, p.z) === 'in') return { kind: 'hook', hook: dh, ring: { x: dh.x, y: dh.y - 0.12, z: dh.z + 0.02, wall: true } };
+    var dh = HOOKS[5];
+    if (!dh.occ && scrDist(_q.set(dh.x, dh.y, dh.z)) < 0.3) return { kind: 'hook', hook: dh, ring: { x: dh.x, y: dh.y - 0.12, z: dh.z + 0.02, wall: true }, snap: new V3(dh.x, dh.y + (it.hangY || 0), dh.z + 0.03) };
   }
-  if (it.onWall) return { kind: 'fall', x: p.x, z: W.zb + 0.15 };
-  // dolls: mouth / hands / feet / head
-  var bestD = null, bdd = 9, kind = null;
+  if (u.wall) return { kind: 'fall', x: u.x, z: W.zb + 0.15 };
+  // dolls under the finger (screen space)
+  var best = null, bs = 1, kind = null;
   for (var i = 0; i < DOLLS.length; i++) {
     var d = DOLLS[i]; if (!d.present || d.state === 'held' || d.state === 'walk') continue;
-    var c = chestXZ(d), dd = d2(p.x, p.z, c.x, c.z);
     if (it.type === 'shoe') {
-      if (d.state === 'lie') continue;
-      var fw = d.foot[it.lr]; fw.updateWorldMatrix(true, false); var fp = _t3.setFromMatrixPosition(fw.matrixWorld);
-      var fd = d2(p.x, p.z, fp.x, fp.z);
-      if (fd < 0.3 && !d.feet[it.lr] && fd < bdd) { bdd = fd; bestD = d; kind = 'foot'; }
+      if (d.state === 'lie' || d.feet[it.lr]) continue;
+      d.foot[it.lr].updateWorldMatrix(true, false); _q.setFromMatrixPosition(d.foot[it.lr].matrixWorld);
+      var fs = scrDist(_q) / 0.2; if (fs < bs) { bs = fs; best = d; kind = 'foot'; }
       continue;
     }
-    if (it.type === 'hat') { var hw = headWorld(d, _t3); var hd = d2(p.x, p.z, hw.x, hw.z); if (hd < 0.28 && !d.hat && hd < bdd) { bdd = hd; bestD = d; kind = 'head'; } continue; }
+    if (it.type === 'hat') { if (d.hat) continue; var hs = scrDist(headWorld(d, _q)) / 0.2; if (hs < bs) { bs = hs; best = d; kind = 'head'; } continue; }
     if (it.type === 'blanket' || d.sleep) continue;
-    if (dd < 0.32 && dd < bdd && (freeHand(d) || ((it.food || it.type === 'cup') && d.sleep === false))) { bdd = dd; bestD = d; kind = freeHand(d) && !d.sleep ? 'hand' : 'mouth'; }
+    var canMouth = it.food || it.type === 'cup' || (it.type === 'plate' && it.onTop);
+    if (canMouth) { var ms = scrDist(mouthWorld(d, _q)) / 0.1; if (ms < bs) { bs = ms; best = d; kind = 'mouth'; } }
+    if (freeHand(d)) { var cs = scrDist(chestXZ(d)) / 0.21; if (cs < bs) { bs = cs; best = d; kind = 'hand'; } }
   }
-  if (bestD) {
-    var cc = chestXZ(bestD);
-    var r = kind === 'foot' ? { x: bestD.cur.x, y: 0, z: bestD.cur.z } : kind === 'head' ? null : { x: cc.x, y: bestD.state === 'sit' ? bestD.seat.y : bestD.state === 'lie' ? bestD.spot.y : 0, z: cc.z };
-    if (kind === 'hand') { bestD.reachP = it.g.position.clone(); bestD.reachK = freeHand(bestD); bestD.reachW = 0.85; }
-    return { kind: kind, doll: bestD, ring: r, sx: r ? r.x : null, sy: r ? r.y : 0, sz: r ? r.z : 0 };
+  if (best) {
+    var r = null, snap = null, d2_ = best;
+    if (kind === 'hand') { var k = freeHand(d2_); handWorld(d2_, k, _q); snap = _q.clone(); snap.y -= 0.02; d2_.reachP = it.g.position.clone(); d2_.reachK = k; d2_.reachW = 0.9; r = { x: d2_.cur.x, y: d2_.state === 'sit' ? d2_.seat.y : d2_.state === 'lie' ? d2_.spot.y : 0, z: d2_.cur.z }; }
+    else if (kind === 'mouth') { snap = mouthWorld(d2_, _q).clone(); fwdOf(d2_, _t3); snap.addScaledVector(_t3, 0.07); snap.y -= 0.05; }
+    else if (kind === 'foot') { d2_.foot[it.lr].updateWorldMatrix(true, false); snap = new V3().setFromMatrixPosition(d2_.foot[it.lr].matrixWorld); snap.y += 0.05; r = { x: snap.x, y: 0, z: snap.z }; }
+    else if (kind === 'head') { snap = headWorld(d2_, _q).clone(); snap.y += 0.25; }
+    return { kind: kind, doll: d2_, ring: r, snap: snap, sx: r ? r.x : null, sy: r ? r.y : 0, sz: r ? r.z : 0 };
   }
-  if (it.type === 'shoe' && p.x > FURN.rack.x0 - 0.2 && p.x < FURN.rack.x1 + 0.2 && p.z > FURN.rack.z0 - 0.25 && p.z < FURN.rack.z1 + 0.2) {
-    var bsl = null, bsd = 9;
-    SLOTS.forEach(function (sl) { if (sl.occ && sl.occ !== it) return; var dd2 = Math.hypot(p.x - sl.x, (p.z - sl.z) * 0.5) + (sl.side === it.lr ? 0 : 0.2) + sl.y * 0.3; if (dd2 < bsd) { bsd = dd2; bsl = sl; } });
-    if (bsl) return { kind: 'slot', slot: bsl, ring: { x: bsl.x, y: bsl.y, z: bsl.z }, sx: bsl.x, sy: bsl.y, sz: bsl.z };
+  if (it.type === 'shoe') {
+    var bsl = null, bsd = 0.22;
+    SLOTS.forEach(function (sl) { if (sl.occ && sl.occ !== it) return; var dd2 = scrDist(_q.set(sl.x, sl.y + 0.03, sl.z)) + (sl.side === it.lr ? 0 : 0.05); if (dd2 < bsd) { bsd = dd2; bsl = sl; } });
+    if (!bsl && u.s && u.s.id === 'rack') { SLOTS.forEach(function (sl) { if (sl.occ) return; var dd3 = Math.abs(sl.x - u.x) + (sl.side === it.lr ? 0 : 0.05) + sl.y; if (!bsl || dd3 < bsd) { bsd = dd3; bsl = sl; } }); }
+    if (bsl) return { kind: 'slot', slot: bsl, ring: { x: bsl.x, y: bsl.y, z: bsl.z }, sx: bsl.x, sy: bsl.y, sz: bsl.z, snap: new V3(bsl.x, bsl.y + 0.08, bsl.z) };
   }
   if (it.type === 'blanket') {
     for (var j = 0; j < SPOTS.length; j++) {
       var s = SPOTS[j]; if (s.blanket && s.blanket !== it) continue;
       var cx = s.hx - s.dx * 0.5, cz = s.hz - s.dz * 0.5;
-      var along = (p.x - cx) * s.dx + (p.z - cz) * s.dz, across = -(p.x - cx) * s.dz + (p.z - cz) * s.dx;
-      if (Math.abs(along) < 0.55 && Math.abs(across) < 0.3) return { kind: 'cover', spot: s, ring: { x: cx, y: s.y, z: cz }, sx: cx, sy: s.y, sz: cz };
+      var along = (u.x - cx) * s.dx + (u.z - cz) * s.dz, across = -(u.x - cx) * s.dz + (u.z - cz) * s.dx;
+      if (Math.abs(along) < 0.6 && Math.abs(across) < 0.32) return { kind: 'cover', spot: s, ring: { x: cx, y: s.y, z: cz }, sx: cx, sy: s.y, sz: cz };
     }
   }
   if (it.food) {
-    for (var k = 0; k < ITEMS.length; k++) { var pl = ITEMS[k]; if (pl.type !== 'plate' || pl.onTop || pl.state === 'finger') continue; var pd = d2(p.x, p.z, pl.g.position.x, pl.g.position.z); if (pd < 0.16) return { kind: 'plate', plate: pl, ring: null, sx: pl.g.position.x, sy: pl.g.position.y, sz: pl.g.position.z }; }
+    for (var k2 = 0; k2 < ITEMS.length; k2++) { var pl = ITEMS[k2]; if (pl.type !== 'plate' || pl.onTop || pl.state === 'finger' || !pl.g.visible) continue; if (d2(u.x, u.z, pl.g.position.x, pl.g.position.z) < 0.13 || scrDist(pl.g.position) < 0.1) return { kind: 'plate', plate: pl, ring: null, sx: pl.g.position.x, sy: pl.g.position.y, sz: pl.g.position.z, snap: pl.g.position.clone().add(new V3(0, 0.1, 0)) }; }
   }
-  var sf = surfaceAt(p.x, p.z);
-  if (!sf) { var q = floorClampItem(p.clone()); sf = surfaceAt(q.x, q.z) || SURF[SURF.length - 3]; return { kind: 'surf', surf: sf, x: q.x, z: q.z, sx: q.x, sy: sf.y, sz: q.z }; }
-  return { kind: 'surf', surf: sf, x: p.x, z: p.z, sx: p.x, sy: sf.y, sz: p.z };
+  return { kind: 'surf', surf: u.s, x: u.x, z: u.z, sx: u.x, sy: u.y, sz: u.z };
 }
 function dropItem(it) {
-  var t = it.target || itemTarget(it, it.hover);
+  var t = it.target || itemTarget(it, underFinger(PTR.x, PTR.y));
   it.target = null; it.preview = null; it.tiltT = 0; it.streamTo = null;
   if (it.pourCup) {
     var c = it.pourCup; it.pourCup = null;
@@ -6273,7 +6297,7 @@ function dropItem(it) {
       toHand(it, d, k); var from = it.fromDoll && it.fromDoll !== d && it.fromDoll.present ? it.fromDoll : null;
       gotItem(d, it, from); SND.clack(it); break;
     }
-    case 'mouth': { biteFrom(d, it, it.type === 'cup'); var s0 = surfaceAt(d.cur.x, d.cur.z + 0.2); toSurf(it, d.cur.x, d.cur.z + 0.25, s0); break; }
+    case 'mouth': { biteFrom(d, it, it.type === 'cup'); if (ITEMS.indexOf(it) < 0) break; var km = freeHand(d); if (km) { toHand(it, d, km); setExpr(d, 'happy', 'grin', 1, 1); } else { var s0 = surfaceAt(d.cur.x, d.cur.z + 0.2); toSurf(it, d.cur.x, d.cur.z + 0.25, s0); } break; }
     case 'foot': toFoot(it, d, it.lr); SND.pop(); setExpr(d, 'happy', 'grin', 0.9, 0.8); startAct(d, 'hop', 0.5); emit('spark', it.g.position, 3, { up: 0.3, life: 0.5, size: 0.04 }); bump('shoe'); break;
     case 'head': toHead(it, d); SND.pop(); setExpr(d, 'happy', 'grin', 1.0, 1); emit('spark', headWorld(d, _t1).add(new V3(0, 0.2, 0)), 4, { up: 0.3 }); later(0.4, function () { var o = nearestDoll(d, 1.2, awake); if (o) { lookAt(o, headWorld(d, _t1), 1.6); startAct(o, 'clap', 0.9); } }); bump(null); break;
     case 'slot': toSlot(it, t.slot); SND.clack(it); emit('spark', it.pos, 2, { up: 0.2, life: 0.4, size: 0.035 }); bump('shoe'); break;
@@ -6357,7 +6381,7 @@ function showPreview(r) {
 function clearPreview() { pring.visible = false; DOLLS.forEach(function (d) { d.preview = null; }); }
 var HINT = { target: null, a: 0, since: 0, rot: 0, rotT: 0 };
 function hintTarget() {
-  function dollH(d) { return { pos: function (o) { return chestXZ(d).clone().add(new V3(0, 0.55, 0)); }, ring: function () { return { x: d.cur.x, y: d.state === 'sit' ? d.seat.y : 0, z: d.cur.z }; }, key: d.id }; }
+  function dollH(d) { return { pos: function (o) { return chestXZ(d).clone().add(new V3(0, 0.62, 0)); }, ring: function () { return { x: d.cur.x, y: d.state === 'sit' ? d.seat.y : 0, z: d.cur.z }; }, key: d.id }; }
   function itemH(it) { return { pos: function () { return it.g.position.clone().add(new V3(0, it.h + 0.12, 0)); }, ring: function () { return it.state === 'hand' || it.state === 'hook' || it.state === 'foot' ? null : { x: it.g.position.x, y: (surfaceAt(it.g.position.x, it.g.position.z, it.g.position.y + 0.02) || { y: 0 }).y, z: it.g.position.z }; }, key: it.id }; }
   var doorH = { pos: function () { return new V3(DOOR.cx, 1.0, DOOR.z + 0.1); }, ring: function () { return { x: DOOR.cx, y: 0, z: DOOR.z + 0.3 }; }, key: 'door' };
   if (!F.picked) return dollH(mel);
@@ -6391,7 +6415,7 @@ function hintUpdate(dt, t) {
   var p = ht.pos(), r = ht.ring();
   hspark.visible = true; hspark.position.copy(p).add(new V3(0, Math.abs(Math.sin(t * 3)) * 0.06, 0));
   hspark.material.opacity = HINT.a * (0.75 + Math.sin(t * 5) * 0.25); hspark.material.rotation = t * 0.8;
-  hspark.scale.setScalar(0.13 + Math.sin(t * 5) * 0.02);
+  hspark.scale.setScalar(0.1 + Math.sin(t * 5) * 0.015);
   if (r) { hring.visible = true; hring.position.set(r.x, r.y + 0.01, r.z); hring.material.opacity = HINT.a * (0.5 + Math.sin(t * 3) * 0.2); var s = 1 + Math.sin(t * 3) * 0.08; hring.scale.set(s, s, 1); } else hring.visible = false;
   // off screen?
   toScreen(p, _sp);
@@ -6466,7 +6490,7 @@ function overlayDraw(t) {
 }
 
 /* ---------- save / restore (device only) ---------- */
-var SKEY = 'gf261109-41-dollhouse-v1', saveOK = true, lastSave = 0, loadStatus = 'first';
+var SKEY = 'gf261109-41-dollhouse-v1', saveOK = true, lastSave = 0, loadStatus = 'first', DEFAULT_STATE = null;
 function serialize() {
   var o = { v: 1, F: F, playT: Math.round(playT), ev: EVENTS, demo: DEMO.done ? 1 : 0, cam: +CAM.tx.toFixed(2), door: DOOR.open ? 1 : 0, lamp: FURN.lamp.on ? 1 : 0, dolls: [], items: [] };
   DOLLS.forEach(function (d) {
@@ -6524,8 +6548,10 @@ function applyState(o) {
     else if (e.st === 'lie' && s && !s.occ) { d.state = 'lie'; d.spot = s; s.occ = d; }
     if (d.state === 'sit') seatPos(c, d.cur); else if (d.state === 'lie') spotFeet(s, d.cur); else d.cur.copy(d.pos);
   });
-  var byId = {};
+  var byId = {}, seenKey = {};
   ITEMS.forEach(function (it) { byId[it.id] = it; });
+  o.items.forEach(function (e) { if (e && e.key) seenKey[e.key] = 1; });
+  if (DEFAULT_STATE) DEFAULT_STATE.items.forEach(function (e) { if (e.key && !seenKey[e.key]) o.items.push(e); });
   var made = [];
   o.items.forEach(function (e) {
     var it = e.key ? ITKEY[e.key] : null;
@@ -6555,7 +6581,7 @@ function applyState(o) {
   ITEMS.forEach(function (it) { if (it.state === 'none') toSurf(it, it.pos.x, it.pos.z, null, false); it.vis = null; });
   DOLLS.forEach(function (d) { if (d.state === 'lie' && d.spot && d.spot.blanket) d.sleep = true; });
 }
-var DEFAULT_STATE = serialize();
+DEFAULT_STATE = serialize();
 DEFAULT_STATE.F = JSON.parse(JSON.stringify(F));
 function loadSaved() {
   var raw = null;
