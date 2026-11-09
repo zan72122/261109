@@ -1,0 +1,440 @@
+{
+  "game": "261109-42",
+  "version": 1,
+  "playback": {
+    "require_user_gesture": true,
+    "alternate_speakers": true,
+    "subtitles": false,
+    "preferred_format": "m4a",
+    "fallback_format": "ogg"
+  },
+  "voices_by_speaker": {
+    "主人公": "Leda",
+    "お客さん": "Aoede",
+    "ママ": "Sulafat",
+    "パパ": "Achird",
+    "きょうだい": "Puck"
+  },
+  "lines": [
+    {
+      "id": "mama_ja_01",
+      "speaker": "ママ",
+      "lang": "ja",
+      "text": "いらっしゃい！",
+      "voice": "Sulafat",
+      "model": "gemini-3.8-flash-tts",
+      "files": {
+        "m4a": "assets/voice/mama_ja_01.m4a",
+        "ogg": "assets/voice/mama_ja_01.ogg"
+      },
+      "unlock": "after_first_user_gesture",
+      "subtitle": false
+    },
+    {
+      "id": "guest_ja_01",
+      "speaker": "お客さん",
+      "lang": "ja",
+      "text": "おじゃましまーす！",
+      "voice": "Aoede",
+      "model": "gemini-3.8-flash-tts",
+      "files": {
+        "m4a": "assets/voice/guest_ja_01.m4a",
+        "ogg": "assets/voice/guest_ja_01.ogg"
+      },
+      "unlock": "after_first_user_gesture",
+      "subtitle": false
+    },
+    {
+      "id": "papa_ja_01",
+      "speaker": "パパ",
+      "lang": "ja",
+      "text": "ジュース、できたよ！",
+      "voice": "Achird",
+      "model": "gemini-3.8-flash-tts",
+      "files": {
+        "m4a": "assets/voice/papa_ja_01.m4a",
+        "ogg": "assets/voice/papa_ja_01.ogg"
+      },
+      "unlock": "after_first_user_gesture",
+      "subtitle": false
+    },
+    {
+      "id": "sibling_ja_01",
+      "speaker": "きょうだい",
+      "lang": "ja",
+      "text": "ねえ、こっち！",
+      "voice": "Puck",
+      "model": "gemini-3.8-flash-tts",
+      "files": {
+        "m4a": "assets/voice/sibling_ja_01.m4a",
+        "ogg": "assets/voice/sibling_ja_01.ogg"
+      },
+      "unlock": "after_first_user_gesture",
+      "subtitle": false
+    },
+    {
+      "id": "hero_ja_01",
+      "speaker": "主人公",
+      "lang": "ja",
+      "text": "どうぞ！",
+      "voice": "Leda",
+      "model": "gemini-3.8-flash-tts",
+      "files": {
+        "m4a": "assets/voice/hero_ja_01.m4a",
+        "ogg": "assets/voice/hero_ja_01.ogg"
+      },
+      "unlock": "after_first_user_gesture",
+      "subtitle": false
+    },
+    {
+      "id": "guest_ja_02",
+      "speaker": "お客さん",
+      "lang": "ja",
+      "text": "わあ！ありがとう！",
+      "voice": "Aoede",
+      "model": "gemini-3.8-flash-tts",
+      "files": {
+        "m4a": "assets/voice/guest_ja_02.m4a",
+        "ogg": "assets/voice/guest_ja_02.ogg"
+      },
+      "unlock": "after_first_user_gesture",
+      "subtitle": false
+    },
+    {
+      "id": "mama_ja_02",
+      "speaker": "ママ",
+      "lang": "ja",
+      "text": "おちゃも、どうぞ。",
+      "voice": "Sulafat",
+      "model": "gemini-3.8-flash-tts",
+      "files": {
+        "m4a": "assets/voice/mama_ja_02.m4a",
+        "ogg": "assets/voice/mama_ja_02.ogg"
+      },
+      "unlock": "after_first_user_gesture",
+      "subtitle": false
+    },
+    {
+      "id": "papa_ja_02",
+      "speaker": "パパ",
+      "lang": "ja",
+      "text": "ここにすわろうか。",
+      "voice": "Achird",
+      "model": "gemini-3.8-flash-tts",
+      "files": {
+        "m4a": "assets/voice/papa_ja_02.m4a",
+        "ogg": "assets/voice/papa_ja_02.ogg"
+      },
+      "unlock": "after_first_user_gesture",
+      "subtitle": false
+    },
+    {
+      "id": "sibling_ja_02",
+      "speaker": "きょうだい",
+      "lang": "ja",
+      "text": "タン、タン！",
+      "voice": "Puck",
+      "model": "gemini-3.8-flash-tts",
+      "files": {
+        "m4a": "assets/voice/sibling_ja_02.m4a",
+        "ogg": "assets/voice/sibling_ja_02.ogg"
+      },
+      "unlock": "after_first_user_gesture",
+      "subtitle": false
+    },
+    {
+      "id": "papa_ja_03",
+      "speaker": "パパ",
+      "lang": "ja",
+      "text": "はいっ、はいっ！",
+      "voice": "Achird",
+      "model": "gemini-3.8-flash-tts",
+      "files": {
+        "m4a": "assets/voice/papa_ja_03.m4a",
+        "ogg": "assets/voice/papa_ja_03.ogg"
+      },
+      "unlock": "after_first_user_gesture",
+      "subtitle": false
+    },
+    {
+      "id": "mama_ja_03",
+      "speaker": "ママ",
+      "lang": "ja",
+      "text": "いいね、たのしいね。",
+      "voice": "Sulafat",
+      "model": "gemini-3.8-flash-tts",
+      "files": {
+        "m4a": "assets/voice/mama_ja_03.m4a",
+        "ogg": "assets/voice/mama_ja_03.ogg"
+      },
+      "unlock": "after_first_user_gesture",
+      "subtitle": false
+    },
+    {
+      "id": "hero_ja_02",
+      "speaker": "主人公",
+      "lang": "ja",
+      "text": "わんちゃん、あそぼ！",
+      "voice": "Leda",
+      "model": "gemini-3.8-flash-tts",
+      "files": {
+        "m4a": "assets/voice/hero_ja_02.m4a",
+        "ogg": "assets/voice/hero_ja_02.ogg"
+      },
+      "unlock": "after_first_user_gesture",
+      "subtitle": false
+    },
+    {
+      "id": "sibling_ja_03",
+      "speaker": "きょうだい",
+      "lang": "ja",
+      "text": "まって、まってー！",
+      "voice": "Puck",
+      "model": "gemini-3.8-flash-tts",
+      "files": {
+        "m4a": "assets/voice/sibling_ja_03.m4a",
+        "ogg": "assets/voice/sibling_ja_03.ogg"
+      },
+      "unlock": "after_first_user_gesture",
+      "subtitle": false
+    },
+    {
+      "id": "guest_ja_03",
+      "speaker": "お客さん",
+      "lang": "ja",
+      "text": "わたしもやる！",
+      "voice": "Aoede",
+      "model": "gemini-3.8-flash-tts",
+      "files": {
+        "m4a": "assets/voice/guest_ja_03.m4a",
+        "ogg": "assets/voice/guest_ja_03.ogg"
+      },
+      "unlock": "after_first_user_gesture",
+      "subtitle": false
+    },
+    {
+      "id": "hero_ja_03",
+      "speaker": "主人公",
+      "lang": "ja",
+      "text": "おそと、いこう！",
+      "voice": "Leda",
+      "model": "gemini-3.8-flash-tts",
+      "files": {
+        "m4a": "assets/voice/hero_ja_03.m4a",
+        "ogg": "assets/voice/hero_ja_03.ogg"
+      },
+      "unlock": "after_first_user_gesture",
+      "subtitle": false
+    },
+    {
+      "id": "mama_ja_04",
+      "speaker": "ママ",
+      "lang": "ja",
+      "text": "ぼうし、もっていこう！",
+      "voice": "Sulafat",
+      "model": "gemini-3.8-flash-tts",
+      "files": {
+        "m4a": "assets/voice/mama_ja_04.m4a",
+        "ogg": "assets/voice/mama_ja_04.ogg"
+      },
+      "unlock": "after_first_user_gesture",
+      "subtitle": false
+    },
+    {
+      "id": "papa_ja_04",
+      "speaker": "パパ",
+      "lang": "ja",
+      "text": "みんなでいこう！",
+      "voice": "Achird",
+      "model": "gemini-3.8-flash-tts",
+      "files": {
+        "m4a": "assets/voice/papa_ja_04.m4a",
+        "ogg": "assets/voice/papa_ja_04.ogg"
+      },
+      "unlock": "after_first_user_gesture",
+      "subtitle": false
+    },
+    {
+      "id": "sibling_ja_04",
+      "speaker": "きょうだい",
+      "lang": "ja",
+      "text": "うみだー！",
+      "voice": "Puck",
+      "model": "gemini-3.8-flash-tts",
+      "files": {
+        "m4a": "assets/voice/sibling_ja_04.m4a",
+        "ogg": "assets/voice/sibling_ja_04.ogg"
+      },
+      "unlock": "after_first_user_gesture",
+      "subtitle": false
+    },
+    {
+      "id": "guest_ja_04",
+      "speaker": "お客さん",
+      "lang": "ja",
+      "text": "ここでたべよう！",
+      "voice": "Aoede",
+      "model": "gemini-3.8-flash-tts",
+      "files": {
+        "m4a": "assets/voice/guest_ja_04.m4a",
+        "ogg": "assets/voice/guest_ja_04.ogg"
+      },
+      "unlock": "after_first_user_gesture",
+      "subtitle": false
+    },
+    {
+      "id": "mama_ja_05",
+      "speaker": "ママ",
+      "lang": "ja",
+      "text": "かぜが、きもちいいね。",
+      "voice": "Sulafat",
+      "model": "gemini-3.8-flash-tts",
+      "files": {
+        "m4a": "assets/voice/mama_ja_05.m4a",
+        "ogg": "assets/voice/mama_ja_05.ogg"
+      },
+      "unlock": "after_first_user_gesture",
+      "subtitle": false
+    },
+    {
+      "id": "papa_ja_05",
+      "speaker": "パパ",
+      "lang": "ja",
+      "text": "おかえり！",
+      "voice": "Achird",
+      "model": "gemini-3.8-flash-tts",
+      "files": {
+        "m4a": "assets/voice/papa_ja_05.m4a",
+        "ogg": "assets/voice/papa_ja_05.ogg"
+      },
+      "unlock": "after_first_user_gesture",
+      "subtitle": false
+    },
+    {
+      "id": "hero_ja_04",
+      "speaker": "主人公",
+      "lang": "ja",
+      "text": "ただいまー！",
+      "voice": "Leda",
+      "model": "gemini-3.8-flash-tts",
+      "files": {
+        "m4a": "assets/voice/hero_ja_04.m4a",
+        "ogg": "assets/voice/hero_ja_04.ogg"
+      },
+      "unlock": "after_first_user_gesture",
+      "subtitle": false
+    },
+    {
+      "id": "mama_ja_06",
+      "speaker": "ママ",
+      "lang": "ja",
+      "text": "おひさま、きれいだね。",
+      "voice": "Sulafat",
+      "model": "gemini-3.8-flash-tts",
+      "files": {
+        "m4a": "assets/voice/mama_ja_06.m4a",
+        "ogg": "assets/voice/mama_ja_06.ogg"
+      },
+      "unlock": "after_first_user_gesture",
+      "subtitle": false
+    },
+    {
+      "id": "guest_ja_05",
+      "speaker": "お客さん",
+      "lang": "ja",
+      "text": "また、あそぼうね！",
+      "voice": "Aoede",
+      "model": "gemini-3.8-flash-tts",
+      "files": {
+        "m4a": "assets/voice/guest_ja_05.m4a",
+        "ogg": "assets/voice/guest_ja_05.ogg"
+      },
+      "unlock": "after_first_user_gesture",
+      "subtitle": false
+    },
+    {
+      "id": "guest_en_01",
+      "speaker": "お客さん",
+      "lang": "en",
+      "text": "Hello!",
+      "voice": "Aoede",
+      "model": "gemini-3.8-flash-tts",
+      "files": {
+        "m4a": "assets/voice/guest_en_01.m4a",
+        "ogg": "assets/voice/guest_en_01.ogg"
+      },
+      "unlock": "after_first_user_gesture",
+      "subtitle": false
+    },
+    {
+      "id": "sibling_en_01",
+      "speaker": "きょうだい",
+      "lang": "en",
+      "text": "Come on!",
+      "voice": "Puck",
+      "model": "gemini-3.8-flash-tts",
+      "files": {
+        "m4a": "assets/voice/sibling_en_01.m4a",
+        "ogg": "assets/voice/sibling_en_01.ogg"
+      },
+      "unlock": "after_first_user_gesture",
+      "subtitle": false
+    },
+    {
+      "id": "mama_en_01",
+      "speaker": "ママ",
+      "lang": "en",
+      "text": "Here you go!",
+      "voice": "Sulafat",
+      "model": "gemini-3.8-flash-tts",
+      "files": {
+        "m4a": "assets/voice/mama_en_01.m4a",
+        "ogg": "assets/voice/mama_en_01.ogg"
+      },
+      "unlock": "after_first_user_gesture",
+      "subtitle": false
+    },
+    {
+      "id": "guest_en_02",
+      "speaker": "お客さん",
+      "lang": "en",
+      "text": "Yummy!",
+      "voice": "Aoede",
+      "model": "gemini-3.8-flash-tts",
+      "files": {
+        "m4a": "assets/voice/guest_en_02.m4a",
+        "ogg": "assets/voice/guest_en_02.ogg"
+      },
+      "unlock": "after_first_user_gesture",
+      "subtitle": false
+    },
+    {
+      "id": "papa_en_01",
+      "speaker": "パパ",
+      "lang": "en",
+      "text": "Let's go!",
+      "voice": "Achird",
+      "model": "gemini-3.8-flash-tts",
+      "files": {
+        "m4a": "assets/voice/papa_en_01.m4a",
+        "ogg": "assets/voice/papa_en_01.ogg"
+      },
+      "unlock": "after_first_user_gesture",
+      "subtitle": false
+    },
+    {
+      "id": "hero_en_01",
+      "speaker": "主人公",
+      "lang": "en",
+      "text": "Thank you!",
+      "voice": "Leda",
+      "model": "gemini-3.8-flash-tts",
+      "files": {
+        "m4a": "assets/voice/hero_en_01.m4a",
+        "ogg": "assets/voice/hero_en_01.ogg"
+      },
+      "unlock": "after_first_user_gesture",
+      "subtitle": false
+    }
+  ]
+}
