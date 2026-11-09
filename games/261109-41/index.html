@@ -5449,7 +5449,8 @@ function updateDoll(d, dt, t) {
     // idle: face nearest neighbour gently if close
     var nb = null, nd = 1.1;
     for (var i = 0; i < DOLLS.length; i++) { var o = DOLLS[i]; if (o === d || !o.present) continue; var dd = d2(d.pos.x, d.pos.z, o.cur.x, o.cur.z); if (dd < nd) { nd = dd; nb = o; } }
-    if (nb && d.state === 'stand') { var want = Math.atan2(nb.cur.x - d.pos.x, nb.cur.z - d.pos.z); d.yaw = dampA(d.yaw, lerp(want, 0, 0.35), 2, dt); ty = d.yaw; }
+    if (nb && d.state === 'stand') { var want = Math.atan2(nb.cur.x - d.pos.x, nb.cur.z - d.pos.z); d.yaw = dampA(d.yaw, clamp(wrapA(want) * 0.6, -1.2, 1.2), 2, dt); ty = d.yaw; }
+    else if (d.state === 'stand') { d.yaw = dampA(d.yaw, clamp(wrapA(d.yaw), -1.2, 1.2), 1.5, dt); ty = d.yaw; }
   }
   d.prevCur.copy(d.cur);
   d.cur.x = damp(d.cur.x, tp.x, kF, dt); d.cur.z = damp(d.cur.z, tp.z, kF, dt); d.cur.y = damp(d.cur.y, tp.y, d.state === 'held' ? 30 : 14, dt);
@@ -5511,7 +5512,7 @@ function updateDoll(d, dt, t) {
     _t3.copy(lp).applyMatrix4(_ikM).sub(d.head.position); _t3.y -= 0.15;
     hy = clamp(Math.atan2(_t3.x, _t3.z), -0.95, 0.95);
     hp = clamp(Math.atan2(-_t3.y, Math.sqrt(_t3.x * _t3.x + _t3.z * _t3.z)), -0.45, 0.55);
-    if (d.state === 'stand' && Math.abs(hy) > 0.75 && lp !== camPos && !d.act) d.yaw = dampA(d.yaw, d.curYaw + hy * 0.6, 3, dt);
+    if (d.state === 'stand' && Math.abs(hy) > 0.75 && lp !== camPos && !d.act) d.yaw = dampA(d.yaw, clamp(wrapA(d.curYaw + hy * 0.6), -1.35, 1.35), 3, dt);
   }
   if (d.sleep) { hy = 0.25; hp = -0.1; }
   d.headYaw = dampA(d.headYaw, hy, 7, dt); d.headPitch = damp(d.headPitch, hp + d.headPitchAdd, 7, dt);
@@ -5682,9 +5683,10 @@ function disarm(a, b, kind) { PAIR[kind + pkey(a, b)] = now(); }
 function rearmIf(a, b, kind, cond) { var k = kind + pkey(a, b); if (PAIR[k] && cond && now() - PAIR[k] > 0.6) delete PAIR[k]; }
 function awake(d) { return d.present && !d.sleep; }
 function chestXZ(d) { return chestWorld(d, d._cw || (d._cw = new V3())); }
+function showYaw(y) { return clamp(wrapA(y), -1.35, 1.35); }
 function faceEach(a, b) {
-  if (a.state === 'stand') a.yaw = Math.atan2(b.cur.x - a.cur.x, b.cur.z - a.cur.z);
-  if (b.state === 'stand') b.yaw = Math.atan2(a.cur.x - b.cur.x, a.cur.z - b.cur.z);
+  if (a.state === 'stand') a.yaw = showYaw(Math.atan2(b.cur.x - a.cur.x, b.cur.z - a.cur.z));
+  if (b.state === 'stand') b.yaw = showYaw(Math.atan2(a.cur.x - b.cur.x, a.cur.z - b.cur.z));
   lookAt(a, headWorld(b, _t1), 2.2); lookAt(b, headWorld(a, _t1), 2.2);
 }
 function between(a, b) { return chestXZ(a).clone().add(chestXZ(b)).multiplyScalar(0.5); }
@@ -5738,7 +5740,7 @@ function talk(a, b) {
     SND.voice(a, [4, 4], t0, 0.08);
   } else if ((a.cfg.arrive && !a.met) || (b.cfg.arrive && !b.met)) {
     startAct(a, 'bow', 0.9); later(0.25, function () { startAct(b, 'bow', 0.9); });
-    a.met = a.met || !!a.cfg.arrive; b.met = b.met || !!b.cfg.arrive;
+    a.met = a.met || !!a.cfg.arrive; b.met = b.met || !!b.cfg.arrive; if (a.cfg.arrive) a.greeted = true; if (b.cfg.arrive) b.greeted = true;
     SND.voice(a, [0, 2, 4], t0, 0.09); SND.voice(b, [4, 2, 0], t0 + 0.55, 0.09);
   } else {
     var v = (a.voice + b.voice + (EVENTS % 3)) % 3;
@@ -5883,7 +5885,7 @@ function heldSocial(d, dt) {
 /* ---------- arrivals ---------- */
 var PORCH_SPOTS = [[-3.65, -1.15], [-2.45, -1.05], [-4.05, -1.6], [-3.0, -1.7]];
 function arrive(d) {
-  d.present = true; d.arrived = true;
+  d.present = true; d.arrived = true; d.arriveT = now();
   var spot = PORCH_SPOTS[0];
   for (var i = 0; i < PORCH_SPOTS.length; i++) {
     var s = PORCH_SPOTS[i], free = true;
@@ -6385,6 +6387,7 @@ function hintTarget() {
   function itemH(it) { return { pos: function () { return it.g.position.clone().add(new V3(0, it.h + 0.12, 0)); }, ring: function () { return it.state === 'hand' || it.state === 'hook' || it.state === 'foot' ? null : { x: it.g.position.x, y: (surfaceAt(it.g.position.x, it.g.position.z, it.g.position.y + 0.02) || { y: 0 }).y, z: it.g.position.z }; }, key: it.id }; }
   var doorH = { pos: function () { return new V3(DOOR.cx, 1.0, DOOR.z + 0.1); }, ring: function () { return { x: DOOR.cx, y: 0, z: DOOR.z + 0.3 }; }, key: 'door' };
   if (!F.picked) return dollH(mel);
+  for (var ai = 2; ai < DOLLS.length; ai++) { var nd = DOLLS[ai]; if (nd.present && !nd.greeted && nd.arriveT && now() - nd.arriveT < 30 && nd.state !== 'walk') return region(nd.cur.x, nd.cur.z) === 'porch' && !DOOR.open ? doorH : dollH(nd); }
   if (!F.greet) return region(guest.cur.x, guest.cur.z) === 'porch' && !DOOR.open ? doorH : dollH(guest);
   if (!F.sat) { var c = CHAIRS[0].occ ? CHAIRS[1] : CHAIRS[0]; return { pos: function () { return new V3(c.x, 0.55, c.z); }, ring: function () { return { x: c.x, y: c.y, z: c.z }; }, key: 'chair' }; }
   if (!F.fed) return { pos: function () { return new V3(wholeCake.x, wholeCake.y + 0.3, wholeCake.z); }, ring: function () { return null; }, key: 'cake' };
@@ -6416,7 +6419,7 @@ function hintUpdate(dt, t) {
   hspark.visible = true; hspark.position.copy(p).add(new V3(0, Math.abs(Math.sin(t * 3)) * 0.06, 0));
   hspark.material.opacity = HINT.a * (0.75 + Math.sin(t * 5) * 0.25); hspark.material.rotation = t * 0.8;
   hspark.scale.setScalar(0.1 + Math.sin(t * 5) * 0.015);
-  if (r) { hring.visible = true; hring.position.set(r.x, r.y + 0.01, r.z); hring.material.opacity = HINT.a * (0.5 + Math.sin(t * 3) * 0.2); var s = 1 + Math.sin(t * 3) * 0.08; hring.scale.set(s, s, 1); } else hring.visible = false;
+  if (r) { hring.visible = true; hring.position.set(r.x, r.y + 0.01, r.z); hring.material.opacity = HINT.a * (0.3 + Math.sin(t * 3) * 0.12); var s = 1 + Math.sin(t * 3) * 0.08; hring.scale.set(s, s, 1); } else hring.visible = false;
   // off screen?
   toScreen(p, _sp);
   HINT.off = (_sp.x < 0 || _sp.x > VW || _sp.y < 0 || _sp.y > VH) ? { x: _sp.x, y: _sp.y } : null;
