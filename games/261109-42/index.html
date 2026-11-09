@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#2c6fd6">
+<title>みんないるよ！うみのおうち</title>
+<meta name="description" content="261109-42: a wordless one-finger seaside dollhouse where the family lives on its own.">
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+} }
+</script>
+<script>
+  // shared play logger when published next to it, otherwise the bundled copy
+  (function () { var s = document.createElement('script'); s.defer = true; s.src = '../../gf-playlog.js';
+    s.onerror = function () { var t = document.createElement('script'); t.defer = true; t.src = 'gf-playlog.js'; document.head.appendChild(t); };
+    document.head.appendChild(s); })();
+</script>
+<style>
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #cfe6ff; touch-action: none; overscroll-behavior: none;
+    -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; -webkit-tap-highlight-color: transparent; }
+  #app, #app canvas { position: fixed; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; }
+  #veil { position: fixed; inset: 0; background: linear-gradient(#2c6fd6, #d3ecff 70%); transition: opacity 0.9s ease; pointer-events: none; }
+  #veil.off { opacity: 0; }
+  #hand { position: fixed; left: 0; top: 0; width: 44px; height: 54px; opacity: 0; pointer-events: none; transition: opacity 0.2s; will-change: transform;
+    filter: drop-shadow(0 3px 4px rgba(20, 35, 70, 0.35)); }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<svg id="hand" viewBox="0 0 44 54" aria-hidden="true">
+  <path d="M15 4c2.5 0 4 2 4 4.5V24l1-.2V20c0-2.3 1.6-3.8 3.6-3.8S27 17.7 27 20v4.3l1 .2V22c0-2.2 1.5-3.6 3.4-3.6s3.4 1.4 3.4 3.6v3.6l.8.2c.2-1.9 1.6-3 3.2-3 1.9 0 3.2 1.4 3.2 3.4V37c0 9-6 15-15 15h-2.5C17 52 13 49.5 9.8 45L3 35.4c-1.3-1.8-1-4 .6-5.2 1.6-1.2 3.8-.9 5.1.7l2.3 2.9V8.5C11 6 12.6 4 15 4z"
+    fill="#ffffff" fill-opacity="0.92" stroke="#1f4fae" stroke-opacity="0.55" stroke-width="1.6"/>
+</svg>
+<div id="veil"></div>
+<script type="module" src="js/main.js"></script>
+</body>
+</html>
